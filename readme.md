@@ -11,7 +11,7 @@ Secure a role in one of the following by mid-2026:
 - AI Engineer with Web/Frontend Focus  
 - Full-Stack AI Developer (SaaS + ML API integration)  
 - Generative AI App Developer (LangChain + FastAPI + Next.js)  
-- AI Product Engineer at a high-growth startup (15–40 LPA)
+- AI Product Engineer at a high-growth startup.
 
 ---
 
@@ -89,4 +89,5 @@ Secure a role in one of the following by mid-2026:
 ## 💬 Let’s Connect
 
 If you're on a similar journey, reach out! Collaboration, feedback, or mentorship welcome.
+
 
