@@ -1,0 +1,50 @@
+# Python cache and env
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+*.env
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Node.js deps
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build folders (Next.js, React, etc.)
+.next/
+dist/
+out/
+build/
+.cache/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs & debug files
+*.log
+
+# Model files / large assets
+*.pt
+*.pth
+*.bin
+*.h5
+*.ckpt
+*.onnx
+*.tflite
+
+# Compressed files
+*.zip
+*.tar
+*.gz
+
+# Resume PDFs (optional)
+Resume_Branding/*.pdf
