@@ -91,6 +91,3 @@ Secure a role in one of the following by mid-2026:
 If you're on a similar journey, reach out! Collaboration, feedback, or mentorship welcome.
 
 
-git add .                                                                                     
-git commit -m "prompt engineering how to call models "
-git push
