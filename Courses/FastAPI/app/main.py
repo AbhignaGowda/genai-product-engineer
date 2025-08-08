@@ -1,9 +1,13 @@
 from http.client import HTTPException
+from sqlite3 import Cursor
 from fastapi import FastAPI ,Response , status,HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from typing import Optional
 from random import randrange
+import psycopg2
+from  psycopg2.extras import RealDictCursor
+import time
 
 app = FastAPI()
 
@@ -11,9 +15,17 @@ class post(BaseModel):
     title: str
     content: str
     published:bool = True
-    rating: Optional[int] = None
 
+while True:
+    try:
+       conn = psycopg2.connect(host='localhost',database='fastapi',user='postgres',password='password',cursor_factory=RealDictCursor)
+       cursor=conn.cursor()
+       print("database connection was successfull")
+       break
 
+    except Exception as error:
+       print("connecting to datbase faild ",error)
+       time.sleep(2)
 
 my_posts=[{"title": "title of post 1","content":"content of post 1","id":1},{"title": "title of post 2","content":"i also like pizza","id":2}]
 
@@ -37,22 +49,25 @@ def root():
 
 @app.get("/posts")
 def get_posts():
-    return {"data":my_posts}
+    cursor.execute("""SELECT * FROM posts """)
+    posts=cursor.fetchall()
+    return {"data":posts}
 
 @app.post("/posts",status_code= status.HTTP_201_CREATED)
 def post_pic(post: post):
-    post_dict=post.dict()
-    post_dict['id']=randrange(0,100000)
-    my_posts.append(post_dict)
-    return {"successfull":post_dict }
-#title str , content str, category, Bool 
+    cursor.execute("""INSERT INTO posts(title,content,published) VALUES (%s,%s,%s) RETURNING *""",
+    
+    (post.title,post.content,post.published)) 
+    new_post = cursor.fetchone() 
+    conn.commit()
+    return {"data":new_post}
+
 @app.get("/posts/{id}")
 def get_posts(id: int, response: Response):
-    ypost=find_post(id)
-    if not ypost:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id :{id} was not found")
-    
-    return{"data_detail" : f"here is post of id  {ypost}"}
+    cursor.execute("""SELECT * FROM posts WHERE id = %s """,(str(id)))
+    p=cursor.fetchone()
+    return{"data_detail" : f"here is post of id  {p}"}
+
 @app.delete("/deletepost/{id}")
 def delete_post(id: int):
     index=find_index_post(id)
