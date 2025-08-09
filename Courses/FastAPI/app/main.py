@@ -1,15 +1,22 @@
 from http.client import HTTPException
-from sqlite3 import Cursor
-from fastapi import FastAPI ,Response , status,HTTPException
-from fastapi.params import Body
+from importlib.resources import contents
+from pyexpat import model
+from fastapi import FastAPI ,Response , status,HTTPException,Depends
 from pydantic import BaseModel
-from typing import Optional
 from random import randrange
 import psycopg2
 from  psycopg2.extras import RealDictCursor
 import time
+from sqlalchemy.orm import Session
+from . import models
+from .database import engine ,get_db
+
+
+models.Base.metadata.create_all(bind=engine) 
 
 app = FastAPI()
+
+
 
 class post(BaseModel):
     title: str
@@ -27,39 +34,33 @@ while True:
        print("connecting to datbase faild ",error)
        time.sleep(2)
 
-my_posts=[{"title": "title of post 1","content":"content of post 1","id":1},{"title": "title of post 2","content":"i also like pizza","id":2}]
 
-def find_post(id):
-    for p in my_posts:
-        if p['id']==id:
-            return p
-def find_index_post(id):
-    for i, p in enumerate(my_posts):
-        if p['id'] ==id:
-            return i
 
-def update(id):
-    for i, p in enumerate(my_posts):
-        if p['id'] ==id:
-            return i
+
 
 @app.get("/")
 def root():
     return {"message": "bingoo"}
 
+
 @app.get("/posts")
-def get_posts():
-    cursor.execute("""SELECT * FROM posts """)
-    posts=cursor.fetchall()
+def get_posts(db:Session = Depends(get_db)):
+    # cursor.execute("""SELECT * FROM posts """)
+    # posts=cursor.fetchall()
+    posts=db.query(models.Post).all()
     return {"data":posts}
 
 @app.post("/posts",status_code= status.HTTP_201_CREATED)
-def post_pic(post: post):
-    cursor.execute("""INSERT INTO posts(title,content,published) VALUES (%s,%s,%s) RETURNING *""",
-    
-    (post.title,post.content,post.published)) 
-    new_post = cursor.fetchone() 
-    conn.commit()
+def post_pic(post: post,db:Session = Depends(get_db)):
+    # cursor.execute("""INSERT INTO posts(title,content,published) VALUES (%s,%s,%s) RETURNING *""",
+    # (post.title,post.content,post.published)) 
+    # new_post = cursor.fetchone() 
+    # conn.commit()
+
+    new_post= models.Post(**post.dict())
+    db.add(new_post)
+    db.commit()
+    db.refresh(new_post)
     return {"data":new_post}
 
 @app.get("/posts/{id}")
@@ -70,23 +71,23 @@ def get_posts(id: int, response: Response):
 
 @app.delete("/deletepost/{id}")
 def delete_post(id: int):
-    index=find_index_post(id)
+    cursor.execute(""" DELETE FROM posts WHERE id = %s RETURNING *""",(str(id)))
+    del_post=cursor.fetchone()
 
-    if index ==None:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id :{id} was not found")
-
-    my_posts.pop(index)    
-    return Response(status_code= status.HTTP_204_NO_CONTENT)
+    conn.commit()
+    return {"data":f"post   {del_post} was deleted"}
 
 @app.put("/posts/{id}")
 def update_post(id: int,post:post):
-    index= find_index_post(id)
-    if index ==None:
+    cursor.execute(""" UPDATE posts SET title = %s , content = %s , published = %s WHERE id = %s RETURNING *""",(post.title,post.content,post.published,str(id)))
+    up_post=cursor.fetchone()
+    print(up_post)
+    conn.commit()
+    
+    if up_post ==None:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id :{id} was not found")
+                
+    return {"data":f"post   {up_post} was updated"}
 
    
-    post_dict=post.dict()
-    post_dict['id']=id
-    my_posts[index]=post_dict
-    return {"data":post_dict}
 

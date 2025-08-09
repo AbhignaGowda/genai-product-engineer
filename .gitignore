@@ -48,3 +48,6 @@ Thumbs.db
 
 # Resume PDFs (optional)
 Resume_Branding/*.pdf
+git add .                                                                                     
+git commit -m "prompt engineering how to call models "
+git push
