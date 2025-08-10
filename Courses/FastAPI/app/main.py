@@ -64,30 +64,41 @@ def post_pic(post: post,db:Session = Depends(get_db)):
     return {"data":new_post}
 
 @app.get("/posts/{id}")
-def get_posts(id: int, response: Response):
-    cursor.execute("""SELECT * FROM posts WHERE id = %s """,(str(id)))
-    p=cursor.fetchone()
-    return{"data_detail" : f"here is post of id  {p}"}
+def get_posts(id:int ,db:Session = Depends(get_db)):
+    # cursor.execute("""SELECT * FROM posts WHERE id = %s """,(str(id)))
+    # p=cursor.fetchone()
+    post=db.query(models.Post).filter(models.Post.id==id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail=f"Post with id {id} not found")
+    return post
 
 @app.delete("/deletepost/{id}")
-def delete_post(id: int):
-    cursor.execute(""" DELETE FROM posts WHERE id = %s RETURNING *""",(str(id)))
-    del_post=cursor.fetchone()
+def delete_post(id:int ,db:Session = Depends(get_db)):
+    # cursor.execute(""" DELETE FROM posts WHERE id = %s RETURNING *""",(str(id)))
+    # del_post=cursor.fetchone()
+    # conn.commit()
+    post=db.query(models.Post).filter(models.Post.id==id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail=f"Post with id {id} not found")
 
-    conn.commit()
-    return {"data":f"post   {del_post} was deleted"}
+    db.delete(post)
+    db.commit()
+    return {"deleted":post} 
 
 @app.put("/posts/{id}")
-def update_post(id: int,post:post):
-    cursor.execute(""" UPDATE posts SET title = %s , content = %s , published = %s WHERE id = %s RETURNING *""",(post.title,post.content,post.published,str(id)))
-    up_post=cursor.fetchone()
-    print(up_post)
-    conn.commit()
-    
-    if up_post ==None:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id :{id} was not found")
-                
-    return {"data":f"post   {up_post} was updated"}
+def update_post(id: int, post: post, db: Session = Depends(get_db)):
+    post_query = db.query(models.Post).filter(models.Post.id == id)
+    existing_post = post_query.first()
+
+    if existing_post is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Post with id {id} was not found"
+        )
+
+    post_query.update(post.dict(), synchronize_session=False)
+    db.commit()
+    return post_query.first()
 
    
 
