@@ -1,5 +1,0 @@
-LLMs and chatmodels
-prompt tempalated 
-output parser
-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
-$ conda deactivate
