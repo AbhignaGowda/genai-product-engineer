@@ -1,46 +1,19 @@
-# Virtual environments
-venv/
-.env/
+# Ignore langchain GenAI folder
+Courses/GenAi/langchain/
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Installers and archives
-*.sh
-*.exe
-*.msi
-*.dmg
-*.tar
-*.tar.gz
-*.tgz
-*.zip
-*.rar
-
-# Large data/model files
-*.pkl
-*.h5
-*.pt
-*.pth
-*.ckpt
-*.bin
-*.pb
-*.onnx
-*.sqlite
-*.db
-
-# Logs
-*.log
-
-# Environment files
+# Ignore Python/conda virtual environments
 .env
-.env.*
+.venv
+env/
+venv/
+conda-env/
+__pycache__/
+
+# Ignore OS files
+.DS_Store
+
+# Ignore large shell/binary installers
+*.sh
+*.bin
+*.tar.gz
+*.zip
