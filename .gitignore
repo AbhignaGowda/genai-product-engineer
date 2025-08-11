@@ -1,53 +1,164 @@
-# Python cache and env
+################################
+# Python
+################################
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+.Python
+.python-version
+
+# Virtual environments
 .venv/
 venv/
 env/
+ENV/
+conda-env/
+conda/
+.conda/
+pip-wheel-metadata/
+
+# Environment variables
 .env
 *.env
 
-# Jupyter checkpoints
-.ipynb_checkpoints/
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Node.js deps
+################################
+# Jupyter Notebook
+################################
+.ipynb_checkpoints/
+.profile
+__pycache__/
+*.nbconvert.ipynb
+
+################################
+# Node.js
+################################
 node_modules/
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
-# Build folders (Next.js, React, etc.)
+################################
+# Frontend / Build outputs
+################################
 .next/
-dist/
 out/
+dist/
 build/
 .cache/
+.tmp/
+.temp/
+coverage/
+*.tsbuildinfo
 
-# OS and IDE files
+################################
+# OS / Editor / IDE
+################################
 .DS_Store
 Thumbs.db
+ehthumbs.db
 .vscode/
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.orig
+*.rej
 
-# Logs & debug files
+################################
+# Logs
+################################
 *.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Model files / large assets
+################################
+# Machine Learning / AI Models
+################################
 *.pt
 *.pth
 *.bin
 *.h5
 *.ckpt
 *.onnx
+*.pb
 *.tflite
+*.joblib
+*.pkl
+*.pickle
+*.sav
+*.model
 
-# Compressed files
+################################
+# Data / Datasets
+################################
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.parquet
+*.feather
+*.arrow
+*.jsonl
+*.db
+*.sqlite
+*.sqlite3
+*.hdf5
+*.npz
+*.npy
+*.mat
+
+################################
+# Compressed / Archives
+################################
 *.zip
 *.tar
+*.tar.gz
+*.tgz
 *.gz
+*.bz2
+*.xz
+*.7z
+*.rar
 
-# Resume PDFs (optional)
+################################
+# Misc Large or Temporary
+################################
+tmp/
+temp/
+*.bak
+*.old
+*.swp
+*.swo
+*.tmp
+*.temp
+
+################################
+# Project Specific (Adjust as needed)
+################################
+Courses/GenAi/langchain/
 Resume_Branding/*.pdf
-git add .                                                                                     
-git commit -m "prompt engineering how to call models "
-git push
