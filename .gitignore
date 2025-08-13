@@ -7,7 +7,6 @@ __pycache__/
 *.pyd
 .Python
 .python-version
-
 # Virtual environments
 .venv/
 venv/
@@ -18,11 +17,24 @@ conda/
 .conda/
 pip-wheel-metadata/
 
-# Environment variables
+################################
+# Environment variables & API Keys
+################################
 .env
+.env.local
+.env.development
+.env.test
+.env.production
 *.env
+.envrc
+config.json
+secrets.json
+api_keys.txt
+credentials.json
 
+################################
 # Distribution / packaging
+################################
 build/
 develop-eggs/
 dist/
@@ -158,8 +170,13 @@ temp/
 *.temp
 
 ################################
-# Project Specific (Adjust as needed)
+# Project Specific
 ################################
-Courses/GenAi/langchain/
-Resume_Branding/*.pdf
+# Large installers and binaries
 Courses/GenAi/langchain/Miniconda3-latest-Linux-x86_64.sh
+*.sh
+# PDF resumes (keep private)
+Resume_Branding/*.pdf
+# Config files that might contain secrets
+config/
+secrets/
